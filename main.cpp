@@ -12,15 +12,18 @@ int main(int argc, char* argv[]) {
     try {
         // 1. 解析NAS文件
         MeshData mesh = NASParser::parse(argv[1]);
+
+        // 2. 检查网格及边界条件有效性
+        // TODO
         
-        // 2. 创建并设置有限元分析
+        // 3. 创建并设置有限元分析
         FEAnalysis analysis(mesh);
         analysis.setup();
         
-        // 3. 求解
+        // 4. 求解
         analysis.solve();
         
-        // 4. 输出结果
+        // 5. 输出结果
         std::cout << "求解完成!" << std::endl;
         std::cout << "节点位移: " << std::endl;
         std::cout << analysis.getDisplacements().head(10) << std::endl; // 显示前10个位移
