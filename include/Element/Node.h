@@ -12,8 +12,8 @@ public:
         this->displacement.reserve(3);
         this->force.reserve(3);
     }
-    Node(int nId, double x1, double y1, double z1, std::vector<double> disp1, std::vector<double> force1)
-    : nodeId(nId), x(x1), y(y1), z(z1), displacement(disp1), force(force1), fixed(false)
+    Node(int nId, double x1, double y1, double z1, std::vector<double> disp1, std::vector<double> force1, bool fix = false)
+    : nodeId(nId), x(x1), y(y1), z(z1), displacement(disp1), force(force1), fixed(fix)
     {}
     ~Node(){}
 

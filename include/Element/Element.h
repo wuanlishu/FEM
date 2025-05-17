@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _ELEMENTDATA_H
-#define _ELEMENTDATA_H
+#ifndef _ELEMENT_H
+#define _ELEMENT_H
 
 #include <map>
 #include <vector>
