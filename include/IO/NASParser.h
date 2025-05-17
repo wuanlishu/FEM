@@ -11,6 +11,8 @@ public:
     static MeshData parse(const std::string& filePath);
 
 private:
+    static void readGlobalDomain(std::string& filePath);
+
     static void parseGrid(std::ifstream& file, MeshData& mesh);
     static void parseCQuad4(std::ifstream& file, MeshData& mesh);
     static void parseCHexa8(std::ifstream& file, MeshData& mesh);
