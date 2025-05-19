@@ -5,42 +5,74 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <memory>
+#include "Node.h"
+#include "Material.h"
 
-struct Node {
-    int id;
-    double x, y, z;
-    bool isConstrained[6];
-};
-
-struct Element {
-    int id;
-    std::string type;
-    std::vector<int> nodeIds;
-    int materialId;
-    int propertyId;
-};
-
-struct Material {
-    int id;
-    double youngsModulus;
-    double poissonsRatio;
-    double density;
-};
-
-class MeshData {
+class Element {
 public:
-    void addNode(const Node& node) { nodes.push_back(node); }
-    void addElement(const Element& element) { elements.push_back(element); }
-    void addMaterial(const Material& material) { materials[material.id] = material;}
+    enum class ElementType {
+        TRI3,
+        QUAD4,
+        TET4,
+        HEX8
+    };
+    Element(int id, ElementType typ, const std::vector<std::shared_ptr<Node>>& nds,
+    std::shared_ptr<Material> mat)
+    : eId(id), type(typ), nodes(nds), materials(mat) {
+        elmValidateCheck();
+    }
+
+    virtual ~Element() = default;
+
+    int getId() const {return eId;}
+    ElementType getType() const {return type;}
+    size_t getNodesNum() const {return nodes.size();}
+    const std::vector<std::shared_ptr<Node>> getNodes() const {return nodes;}
+    std::shared_ptr<Material> getMaterial() const {return materials;}
+    void setMaterial(std::shared_ptr<Material> material) {materials = material;}
+
+    virtual std::vector<std::vector<double>> computeStiffnessMatrix() const = 0;
+    virtual std::vector<std::vector<double>> computeMassMatrix() const = 0;
+    virtual std::vector<double> computeStrain(const std::vector<double>& displacements) const = 0;
+    virtual std::vector<double> computeStress(const std::vector<double>& displacements) const = 0;
     
-    const std::vector<Node>& getNodes() const { return nodes; }
-    const std::vector<Element>& getElements() const { return elements; }
-    const Material& getMaterials(int id) const { return materials.at(id); }
-    
-private:
-    std::vector<Node> nodes;
-    std::vector<Element> elements;
-    std::map<int, Material> materials;
+    virtual double computeVolume() const = 0;
+
+    virtual void elmValidateCheck() const {
+        if(nodes.empty()) {
+            throw std::runtime_error("Element has no nodes.");
+        }
+
+        size_t required_nodes = 0;
+        switch (type) {
+            case ElementType::TRI3:
+                required_nodes = 3;
+                break;
+            case ElementType::QUAD4:
+                required_nodes = 4;
+                break;
+            case ElementType::TET4:
+                required_nodes = 4;
+                break;
+            case ElementType::HEX8:
+                required_nodes = 8;
+                break;
+        }
+
+        if(nodes.size() != required_nodes){
+            throw std::runtime_error("nodes number don't match required nodes.");
+        }
+
+        if(!materials) {
+            throw std::runtime_error("Element has no material assigned");
+        }
+    }
+protected:
+    int eId;
+    ElementType type;
+    std::vector<std::shared_ptr<Node>> nodes;
+    std::shared_ptr<Material> materials;
 };
 
 #endif
