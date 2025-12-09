@@ -17,6 +17,7 @@ public:
         TET4,
         HEX8
     };
+    Element() = delete;
     Element(int id, ElementType typ, const std::vector<std::shared_ptr<Node>>& nds,
     std::shared_ptr<Material> mat)
     : eId(id), type(typ), nodes(nds), materials(mat) {

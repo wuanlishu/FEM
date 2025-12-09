@@ -1,8 +1,8 @@
-#include "../../include/parser/NASParser.h"
+#include "IO/NASParser.h"
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
-
+#include "Mesh/MeshData.h"
 MeshData NASParser::parse(const std::string& filePath) {
     std::ifstream file(filePath);
     if(!file.is_open()) {
@@ -38,32 +38,30 @@ MeshData NASParser::parse(const std::string& filePath) {
 
 void NASParser::parseGrid(std::ifstream& file, MeshData& mesh) {
     std::string line;
-    Node node;
 
     std::getline(file, line);
-    node.id = std::stoi(line.substr(8, 16));
-    node.x  = std::stod(line.substr(24,16));
+    int node_id = std::stoi(line.substr(8, 16));
+    double x_coord  = std::stod(line.substr(24,16));
 
     std::getline(file, line);
-    node.y  = std::stod(line.substr(8, 16));
-    node.z  = std::stod(line.substr(24,16));
+    double y_coord  = std::stod(line.substr(8, 16));
+    double z_coord  = std::stod(line.substr(24,16));
 
+    Node node(node_id, x_coord, y_coord, z_coord);
     mesh.addNode(node);
 }
 
 void NASParser::parseCQuad4(std::ifstream& file, MeshData& mesh) {
     std::string line;
-    Element element;
-    // TODO
 
-    mesh.addElement(element);
+    std::getline(file, line);
+    int element_id = std::stoi(line.substr(8, 16));
+    int node_id_1 = std::stoi(line.substr(24, 16));
+
 }
 
 void NASParser::parseCHexa8(std::ifstream& file, MeshData& mesh) {
     std::string line;
-    Element element;
-    // TODO
 
-    mesh.addElement(element);
 }
 

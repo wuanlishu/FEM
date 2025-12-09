@@ -6,19 +6,20 @@
 class Node
 {
 public:
+    Node() = default;
     Node(int nId, double x1, double y1, double z1)
-    : nodeId(nId), x(x1), y(y1), z(z1), fixed(false)
+    : id(nId), x(x1), y(y1), z(z1), fixed(false)
     {
         this->displacement.reserve(3);
         this->force.reserve(3);
     }
     Node(int nId, double x1, double y1, double z1, std::vector<double> disp1, std::vector<double> force1, bool fix = false)
-    : nodeId(nId), x(x1), y(y1), z(z1), displacement(disp1), force(force1), fixed(fix)
+    : id(nId), x(x1), y(y1), z(z1), displacement(disp1), force(force1), fixed(fix)
     {}
     ~Node(){}
 
-    int getId() const { return this->nodeId; }
-    void setId(int nId) { this->nodeId = nId; }
+    int getId() const { return this->id; }
+    void setId(int nId) { this->id = nId; }
 
     int getX() const { return this->x; }
     void setX(double newX) { this->x = newX; }
@@ -42,7 +43,7 @@ public:
     void setFixed(bool isfixed) { this->fixed = isfixed; }
 
 private:
-    int nodeId;
+    int id;
     double x;
     double y;
     double z;

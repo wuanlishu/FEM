@@ -3,9 +3,8 @@
 #define _NASPARSER_H
 
 #include <iostream>
-#include "MeshData.h"
 #include <string>
-// NASParser.h
+
 class NASParser {
 public:
     static MeshData parse(const std::string& filePath);
