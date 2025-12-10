@@ -8,6 +8,7 @@
 #include <memory>
 #include "Node.h"
 #include "Material.h"
+#include <Eigen/Dense>
 
 class Element {
 public:
@@ -33,8 +34,8 @@ public:
     std::shared_ptr<Material> getMaterial() const {return materials;}
     void setMaterial(std::shared_ptr<Material> material) {materials = material;}
 
-    virtual std::vector<std::vector<double>> computeStiffnessMatrix() const = 0;
-    virtual std::vector<std::vector<double>> computeMassMatrix() const = 0;
+    virtual Eigen::MatrixXd computeStiffnessMatrix() const = 0;
+    virtual Eigen::MatrixXd computeMassMatrix() const = 0;
     virtual std::vector<double> computeStrain(const std::vector<double>& displacements) const = 0;
     virtual std::vector<double> computeStress(const std::vector<double>& displacements) const = 0;
     

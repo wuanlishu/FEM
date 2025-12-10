@@ -1,7 +1,7 @@
 #include "fem/FEAnalysis.h"
 #include <iostream>
 
-FEAnalysis::FEAnalysis(const MeshData& mesh) : mesh(mesh) {}
+FEAnalysis::FEAnalysis(const Element& mesh) : mesh(mesh) {}
 
 void FEAnalysis::setup() {
     int numDOFs = mesh.getNodes().size() * 6;
@@ -20,7 +20,7 @@ void FEAnalysis::assembleGlobalStiffnessMatrix() {
     std::vector<Eigen::Triplet<double>> tripletList;
 
     for (const auto& element : mesh.getElements()) {
-        const auto& material = mesh.getMaterials(element.materialId);
+        const auto& material = mesh.getMaterial(element.materialId);
         
         if (element.type == "CQUAD4") {
             Eigen::Matrix<double, 8, 8> ke = Eigen::Matrix<double, 8, 8>::Identity();

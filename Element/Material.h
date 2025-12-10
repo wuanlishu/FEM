@@ -35,7 +35,7 @@ public:
     }
 private:
     void matValidCheck() const;
-
+public:
     int getId() const { return mId; }
     void setId(int id) { mId = id; };
 

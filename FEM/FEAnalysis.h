@@ -3,12 +3,12 @@
 #define _FEANALYSIS_H
 // FEAnalysis.h
 #include <vector>
-#include "../parser/MeshData.h"
+#include "Element/Element.h"
 #include <Eigen/Sparse>
 
 class FEAnalysis {
 public:
-    FEAnalysis(const MeshData& mesh);
+    FEAnalysis(const Element& mesh);
 
     void setup();
     void solve();
@@ -23,7 +23,7 @@ private:
     void solveLinearSystem();
     void computeStressesAndStrains();
 
-    const MeshData& mesh;
+    const Element& mesh;
     Eigen::SparseMatrix<double> globalStiffness;
     Eigen::VectorXd displacements;
     Eigen::VectorXd forces;
